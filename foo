@@ -1,0 +1,10 @@
+---
+classes:
+  foobar:
+parameters:
+---
+classes:
+  foobar:
+parameters:
+    cobbler_hostname: testbox.example.com
+    cobbler_profile: foobar
