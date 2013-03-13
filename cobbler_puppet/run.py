@@ -71,6 +71,8 @@ def run():
             print "*** Required parameters missing for system: %s\n" % e
             print "*** Raw ENC:"
             print enc.raw
+            print "-------------------------------------------------------------"
+            continue
 
         system = CobblerSystem()
 

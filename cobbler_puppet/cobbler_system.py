@@ -80,9 +80,12 @@ class CobblerSystem:
         self._modify("modify_interface", interface)
 
 
-    def set_netboot(netboot):
+    def set_netboot(self, netboot):
         self._modify("netboot_enabled", netboot)
 
+
     def __setattr__(self, name, value):
-        if value not None:
-            getattr(self, "set_" + name)(value)
+        if "set_" not in name:
+            if value is not None:
+                getattr("set_" + name)(value)
+
