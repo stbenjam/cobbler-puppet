@@ -4,7 +4,7 @@ import yaml
 import unittest
 
 # Load Module
-sys.path.append('..')
+sys.path.append('../src')
 import cobbler_puppet
 
 class ConfigTests(unittest.TestCase):
