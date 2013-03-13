@@ -3,6 +3,7 @@
 import yaml
 import unittest
 import exceptions
+from custom_exceptions import *
 
 class EncParser:
     """
@@ -14,7 +15,7 @@ class EncParser:
     """
 
     def __init__(self, enc):
-        self._enc = yaml.load(enc)
+        self._enc = enc
         self._definition = {}
 
     def fetch_param(self, param):
@@ -30,6 +31,9 @@ class EncParser:
                 self.missing(param)
 
         return self._definition[param]
+
+    def get_raw(self):
+        return yaml.dump(self._enc)
 
     def get_system_name(self):
         """
@@ -67,8 +71,14 @@ class EncParser:
         """
         return self.fetch_param("interfaces")
 
+    def get_netboot(self):
+        """
+        Getter for netboot
+        """
+        return self.fetch_param("netboot")
+
     def missing(self, param):
-        raise MissingRequiredCobblerParameter(param)
+        raise EncParameterNotFound(param)
 
     def __getattr__(self, name):
         """
@@ -80,17 +90,10 @@ class EncParser:
             except TypeError:
                 self.missing(name)
 
-class MissingRequiredCobblerParameter(Exception):
-    def __init__(self, value):
-        self.value = value
-    def __str__(self):
-       return repr(self.value)
-
-
 class EncParserTests(unittest.TestCase):
 
     def setUp(self):
-        self.enc = EncParser('---\nclasses:\n  ntp:\n  foobar:\n  whatever:\nparameters:\n  cobbler_system_name: web.example.com\n  cobbler_hostname: web.example.com\n  cobbler_profile: default\n  cobbler_kernel_opts:\n    aspci: "off"\n    quiet: None\n  cobbler_ks_meta:\n    location: Atlanta\n  cobbler_interfaces:\n    eth0:\n      mac: DE:AD:DE:AD:BE:EF\n      ipaddress: 192.168.2.2\n      netmask: 255.255.255.0\n      gateway: 192.168.2.1')
+        self.enc = EncParser(yaml.load('---\nclasses:\n  ntp:\n  foobar:\n  whatever:\nparameters:\n  cobbler_system_name: web.example.com\n  cobbler_hostname: web.example.com\n  cobbler_profile: default\n  cobbler_kernel_opts:\n    aspci: "off"\n    quiet: None\n  cobbler_ks_meta:\n    location: Atlanta\n  cobbler_interfaces:\n    eth0:\n      mac: DE:AD:DE:AD:BE:EF\n      ipaddress: 192.168.2.2\n      netmask: 255.255.255.0\n      gateway: 192.168.2.1'))
 
 
     def testParsing(self):
@@ -108,7 +111,7 @@ class EncParserTests(unittest.TestCase):
     def testMissing(self):
         try:
             self.enc.boogers
-        except MissingRequiredCobblerParameter:
+        except EncParameterNotFound:
             pass
         else:
             self.fail("MissingRequiredCobblerParamter not thrown.")

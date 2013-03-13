@@ -30,11 +30,15 @@ class CobblerSystem:
 
     def set_hostname(self, hostname):
         """
-        Sets the cobbler system hostname and name
+        Sets the cobbler system hostname
         """
-        self._modify("name", hostname)
         self._modify("hostname", hostname)
 
+    def set_system_name(self, system_name):
+        """
+        Sets the cobbler system name
+        """
+        self._modify("name", hostname)
 
     def set_profile(self, profile):
         """
@@ -57,7 +61,7 @@ class CobblerSystem:
         self._modify("ks_meta", kwargs)
 
 
-    def create_interface(self, interface="eth0", mac="", ip="", subnet="", gateway="", static=False):
+    def create_interface(self, interface="eth0", mac="", ipaddress="", subnet="", gateway="", static=False):
         """
         Creates a simple network interface
         """
@@ -79,3 +83,6 @@ class CobblerSystem:
     def set_netboot(netboot):
         self._modify("netboot_enabled", netboot)
 
+    def __setattr__(self, name, value):
+        if value not None:
+            getattr(self, "set_" + name)(value)

@@ -12,7 +12,7 @@ import ConfigParser
 
 class Config:
 
-    def __init__(self, configFile="../etc/cobbler-puppet.conf"):
+    def __init__(self, configFile="./etc/cobbler-puppet.conf"):
         self._cp = ConfigParser.ConfigParser()
         self._cp.readfp(open(configFile))
 
