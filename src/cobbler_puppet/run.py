@@ -37,14 +37,9 @@ def run():
         sys.exit(1)
 
     # Either "many" or "one"
-    if ("hostname" and "do_many" in options.__dict__):
+    if options.__dict__["do_many"] and options.__dict__["hostname"]: 
         Parser.print_help()
         print "\n*** Invalid Options: Cannot specify --many and --hostname"
-        sys.exit(1)
-
-    if ("hostname" or "do_many" not in options.__dict__):
-        Parser.print_help()
-        print "\n*** Invalid Options: Either --many or --hostname required"
         sys.exit(1)
 
     config = Config()

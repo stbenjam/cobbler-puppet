@@ -22,6 +22,8 @@ class Config:
         # Get cobbler configuration
         if self._cp.getboolean("cobbler", "use_rhn_auth"):
             self.get_rhn_credentials()
+        elif self._cp.getboolean("cobbler", "use_shared_secret"):
+            self.get_shared_secret()
         else:
             self._config['username'] = self._cp.get("cobbler", "username")
             self._config['password'] = self._cp.get("cobbler", "password")
@@ -47,6 +49,18 @@ class Config:
         initCFG()
         self.config['username'] = 'taskomatic_user'
         self.config['password'] = CFG.SESSION_SECRET_1
+
+
+    def get_shared_secret(self):
+        """
+        Use cobbler shared secret for auth
+        """
+        fd = open("/var/lib/cobbler/web.ss")
+        secret = fd.read()
+       
+        self.config['username'] = ""
+        self.config['password'] = secret
+ 
 
     def __getattr__(self, name):
         return self._config[name]
