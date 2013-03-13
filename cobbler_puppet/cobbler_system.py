@@ -2,7 +2,6 @@
 CobblerSystem Class
 
 Does the actual interaction with Cobbler.
-
 """
 
 from config import Config
