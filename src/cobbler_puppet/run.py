@@ -32,13 +32,17 @@ def run():
 
     (options, args) = Parser.parse_args()
 
+    if len(sys.argv) == 1:
+        Parser.print_help()
+        sys.exit(1)
+
     # Either "many" or "one"
-    if (hostname and do_many in options.__dict__):
+    if ("hostname" and "do_many" in options.__dict__):
         Parser.print_help()
         print "\n*** Invalid Options: Cannot specify --many and --hostname"
         sys.exit(1)
 
-    if (hostname or do_many not in options.__dict__):
+    if ("hostname" or "do_many" not in options.__dict__):
         Parser.print_help()
         print "\n*** Invalid Options: Either --many or --hostname required"
         sys.exit(1)
