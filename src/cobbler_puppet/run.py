@@ -11,27 +11,36 @@ from optparse import OptionParser, OptionGroup
 
 
 def run():
+    """ Guts of the user-facing portion """
 
-    ##########################################################
-    #
-    # Parse Command Line Options 
-    #
-    ##########################################################
+    """
+    Parse Command Line Options
+    """
 
     usage = "usage: %prog [options]"
 
     Parser = OptionParser(usage=usage)
 
-    Parser.add_option("-m","--many", dest="do_many", action="store_true", default=False, help="Use node_lister and do multiple machines")
-    Parser.add_option("-s","--search", dest="search_string", default="", metavar="STRING", help="Search string to pass to node_lister")
-    Parser.add_option("-n","--hostname", dest="hostname",  default="", metavar="STRING", help="Target System Hostname")
+    Parser.add_option("-m", "--many", dest="do_many", action="store_true",
+                      default=False, help="Do multiple machines")
+
+    Parser.add_option("-s", "--search", dest="search_string", default="",
+                      metavar="STRING", help="Search string")
+
+    Parser.add_option("-n", "--hostname", dest="hostname",  default="",
+                      metavar="STRING", help="Target System Hostname")
 
     (options, args) = Parser.parse_args()
 
     # Either "many" or "one"
-    if (not options.__dict__["do_many"] and not options.__dict__["hostname"]) or (options.__dict__["do_many"] and options.__dict__["hostname"]):
+    if (hostname and do_many in options.__dict__):
         Parser.print_help()
-        print "\n*** Invalid Options: Either --many or --hostname required (and not both)"
+        print "\n*** Invalid Options: Cannot specify --many and --hostname"
+        sys.exit(1)
+
+    if (hostname or do_many not in options.__dict__):
+        Parser.print_help()
+        print "\n*** Invalid Options: Either --many or --hostname required"
         sys.exit(1)
 
     config = Config()
@@ -62,16 +71,16 @@ def run():
     documents = yaml.load_all(output)
 
     for system in documents:
-        print "-------------------------------------------------------------"
+        print "-----------------------------------------------------------"
         enc = EncParser(system)
 
         try:
-            required_options = [ enc.system_name, enc.profile ]
+            required_options = [enc.system_name, enc.profile]
         except EncParameterNotFound, e:
             print "*** Required parameters missing for system: %s\n" % e
             print "*** Raw ENC:"
             print enc.raw
-            print "-------------------------------------------------------------"
+            print "-----------------------------------------------------------"
             continue
 
         system = CobblerSystem()
@@ -80,8 +89,8 @@ def run():
         # in EncParser and CobblerSystem. I don't know if I like it.
         # But it's cool.
 
-        attributes = [ "hostname", "profile", "interfaces",
-                        "ks_opts", "ks_meta", "netboot" ]
+        attributes = ["hostname", "profile", "interfaces",
+                      "ks_opts", "ks_meta", "netboot"]
 
         for attribute in attributes:
             try:
@@ -90,9 +99,4 @@ def run():
                 # no biggie
                 pass
 
-
-        print "-------------------------------------------------------------"
-
-         
-
-
+        print "-----------------------------------------------------------"

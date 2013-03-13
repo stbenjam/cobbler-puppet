@@ -10,13 +10,14 @@ import os
 import sys
 import ConfigParser
 
+
 class Config:
 
     def __init__(self, configFile="./etc/cobbler-puppet.conf"):
         self._cp = ConfigParser.ConfigParser()
         self._cp.readfp(open(configFile))
 
-        self._config = { }
+        self._config = {}
 
         # Get cobbler configuration
         if self._cp.getboolean("cobbler", "use_rhn_auth"):
@@ -28,23 +29,25 @@ class Config:
 
         # Get Puppet ENC Configuration
         self._config['node_lister'] = self._cp.get("puppet", "node_lister")
-        self._config['external_nodes'] = self._cp.get("puppet", "external_nodes")
+        self._config['external_nodes'] = self._cp.get("puppet",
+                                                      "external_nodes")
 
     def get_rhn_credentials(self):
         """
-        If we're using the rhn authorization module, we get the taskomatic user's
-        password by importing the spacewalk modules
+        If we're using the rhn authorization module, we get the taskomatic
+        user's password by importing the spacewalk modules
         """
         sys.path.append('/usr/share/rhn')
         try:
             from spacewalk.common.rhnConfig import initCFG, CFG
         except ImportError:
-            raise ConfigError("This is not a Spacewalk server, but the configuration says I am.")
+            raise ConfigError("This is not a Spacewalk server, but the" +
+                              "configuration says I am.")
 
         initCFG()
         self.config['username'] = 'taskomatic_user'
         self.config['password'] = CFG.SESSION_SECRET_1
- 
+
     def __getattr__(self, name):
         return self._config[name]
 
@@ -52,7 +55,7 @@ class Config:
 class ConfigError(Exception):
     """
     Exception when there's a problem with the configuration.
-    """ 
+    """
     def __init__(self, value):
         self.value = value
 
@@ -67,4 +70,3 @@ if __name__ == "__main__":
     print config.api_url
     print config.external_nodes
     print config.node_lister
-
