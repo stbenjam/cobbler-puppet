@@ -27,7 +27,8 @@ class Config:
         else:
             self._config['username'] = self._cp.get("cobbler", "username")
             self._config['password'] = self._cp.get("cobbler", "password")
-            self._config['api_url'] = self._cp.get("cobbler", "api_url")
+
+        self._config['api_url'] = self._cp.get("cobbler", "api_url")
 
         # Get Puppet ENC Configuration
         self._config['node_lister'] = self._cp.get("puppet", "node_lister")
@@ -47,8 +48,8 @@ class Config:
                               "configuration says I am.")
 
         initCFG()
-        self.config['username'] = 'taskomatic_user'
-        self.config['password'] = CFG.SESSION_SECRET_1
+        self._config['username'] = 'taskomatic_user'
+        self._config['password'] = CFG.SESSION_SECRET_1
 
 
     def get_shared_secret(self):
@@ -58,8 +59,8 @@ class Config:
         fd = open("/var/lib/cobbler/web.ss")
         secret = fd.read()
        
-        self.config['username'] = ""
-        self.config['password'] = secret
+        self._config['username'] = ""
+        self._config['password'] = secret
  
 
     def __getattr__(self, name):

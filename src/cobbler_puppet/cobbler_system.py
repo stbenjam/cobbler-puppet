@@ -41,7 +41,7 @@ class CobblerSystem:
         """
         Sets the cobbler system name
         """
-        self._modify("name", hostname)
+        self._modify("name", system_name)
 
     def set_profile(self, profile):
         """
@@ -87,6 +87,15 @@ class CobblerSystem:
         self._modify("netboot_enabled", netboot)
 
     def __setattr__(self, name, value):
-        if "set_" not in name:
-            if value is not None:
-                getattr("set_" + name)(value)
+        """
+        Ok, this is tricky, and soley exists for the novelty.
+        You can take an instance of this class and do something like this:
+
+            system.__set__hostname = "foobar"
+
+        Which really calls system.set_hostname("foobar")    
+        """
+        if name[0:7] == "__set__":
+            getattr(self, "set_" + name[7:])(value)
+        else:
+            self.__dict__[name] = value
