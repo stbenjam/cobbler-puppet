@@ -37,7 +37,7 @@ def run():
         sys.exit(1)
 
     # Either "many" or "one"
-    if options.__dict__["do_many"] and options.__dict__["hostname"]: 
+    if options.__dict__["do_many"] and options.__dict__["hostname"]:
         Parser.print_help()
         print "\n*** Invalid Options: Cannot specify --many and --hostname"
         sys.exit(1)
@@ -89,15 +89,9 @@ def run():
 
         for attribute in attributes:
             try:
-
-                # This is some tricky shit, it's soley for the sake of being
-                # novel and getting into some python guts.  It's cool, but
-                # ugly? FIXME or not.  I haven't decided. 
-
-                setattr(system, "__set__" + attribute, getattr(enc, attribute))
-
+                getattr(system, "set_" + attribute, getattr(enc, attribute))
             except EncParameterNotFound:
-                continue # no biggie, not a required param
+                continue  # no biggie, not a required param
 
         system.save()
         print "-----------------------------------------------------------"
