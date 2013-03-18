@@ -64,38 +64,31 @@ class CobblerSystem:
         """
         self._modify("ks_meta", kwargs)
 
-    def create_interface(self, interface="eth0", mac="", ipaddress="",
-                         subnet="", gateway="", static=False):
+    def set_interface(self, **kwargs):
         """
-        Creates a simple network interface
+        Creates a network interface:
+        Expects keyword arguments:
+        { 'interface': 'eth0',
+           'macaddress': 'DE:AD:DE:AD:BE:EF',
+           'ipaddress': '192.168.1.2',
+           'subnet':    '255.255.255.0',
+           'gateway':   '192.168.1.1',
+           'static':    True
+        }
         """
-        interface = {}
-        if mac:
-            interface["macaddress-%s" % interface] = mac
-        if ip:
-            interface["ipaddress-%s" % interface] = ip
-        if subnet:
-            interface["subnet-%s" % interface] = subnet
-        if gateway:
-            self._modify("gateway", gateway)
 
-        interface["static-%s" % interface] = static
+        interface = {}
+
+        # Make a cobbler friendly dict -- e.g. 'ipaddress-eth0'
+        skip = ['interface', 'gateway']
+        for k, v in kwargs.iteritems():
+            if k not in skip:
+                interface['%s-%s' % (k, kwargs['interface'])] = v
+
+        if "gateway" in kwargs:
+            self._modify("gateway", gateway)
 
         self._modify("modify_interface", interface)
 
     def set_netboot(self, netboot):
         self._modify("netboot_enabled", netboot)
-
-    def __setattr__(self, name, value):
-        """
-        Ok, this is tricky, and soley exists for the novelty.
-        You can take an instance of this class and do something like this:
-
-            system.__set__hostname = "foobar"
-
-        Which really calls system.set_hostname("foobar")    
-        """
-        if name[0:7] == "__set__":
-            getattr(self, "set_" + name[7:])(value)
-        else:
-            self.__dict__[name] = value
