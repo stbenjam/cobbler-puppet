@@ -51,17 +51,15 @@ class Config:
         self._config['username'] = 'taskomatic_user'
         self._config['password'] = CFG.SESSION_SECRET_1
 
-
     def get_shared_secret(self):
         """
         Use cobbler shared secret for auth
         """
         fd = open("/var/lib/cobbler/web.ss")
         secret = fd.read()
-       
+
         self._config['username'] = ""
         self._config['password'] = secret
- 
 
     def __getattr__(self, name):
         return self._config[name]
@@ -76,7 +74,6 @@ class ConfigError(Exception):
 
     def __str__(self):
         return repr(self.value)
-
 
 if __name__ == "__main__":
     config = Config("../etc/cobbler-puppet.conf")
