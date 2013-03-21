@@ -1,6 +1,8 @@
 cobbler-puppet
 ==============
 
+[![Build Status](https://travis-ci.org/stbenjam/cobbler-puppet.png)](https://travis-ci.org/stbenjam/cobbler-puppet)
+
 ! Not ready for use.  Work in progress...
 
 Manage Cobbler Server Entries Based On Output of a
