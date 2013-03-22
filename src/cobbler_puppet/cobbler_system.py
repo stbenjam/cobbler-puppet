@@ -12,9 +12,9 @@ import xmlrpclib
 
 class CobblerSystem:
 
-    def __init__(self):
-        config = Config()
-        self._cobbler = xmlrpclib.Server(config.api_url)
+    def __init__(self, configFile):
+        config = Config(configFile=configFile)
+        self._cobbler = xmlrpclib.Server(config.api_url, allow_none=True)
         self._token = self._cobbler.login(config.username, config.password)
         self._system = self._cobbler.new_system(self._token)
 
@@ -57,12 +57,37 @@ class CobblerSystem:
         """
         self._modify("kernel_options", kwargs)
 
+    def set_kernel_opts_post(self, **kwargs):
+        """
+        Sets Kernel Opts Post
+        """
+        self._modify("kernel_opts_post", kwargs)
+
     def set_ks_meta(self, **kwargs):
         """
         Sets kickstart metadata   Pass as named keywords.  E.g.,
         set_ks_meta(self, foo=bar)
         """
         self._modify("ks_meta", kwargs)
+
+    def set_name_servers(self, nameservers):
+        """
+        Sets DNS Resolvers
+        """
+        self._modify("name_servers", nameservers)
+
+    def set_name_servers_search(self, search):
+        """
+        Sets DNS Search path
+        """
+        self._modify("name_servers_search", search)
+
+    def set_interfaces(self, **kwargs):
+        """ Parses any interfaces in a puppet create_resources style
+        format """
+        for interface, config in kwargs.iteritems():
+            config["interface"] = interface
+            self.set_interface(**config)
 
     def set_interface(self, **kwargs):
         """
@@ -86,7 +111,7 @@ class CobblerSystem:
                 interface['%s-%s' % (k, kwargs['interface'])] = v
 
         if "gateway" in kwargs:
-            self._modify("gateway", gateway)
+            self._modify("gateway", kwargs["gateway"])
 
         self._modify("modify_interface", interface)
 

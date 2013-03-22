@@ -55,6 +55,12 @@ class EncParser:
         """
         return self.fetch_param("profile")
 
+    def get_kernel_opts_post(self):
+        """
+        Getter for kernel opts
+        """
+        return self.fetch_param("kernel_opts_post")
+
     def get_kernel_opts(self):
         """
         Getter for kernel opts
@@ -78,6 +84,18 @@ class EncParser:
         Getter for netboot
         """
         return self.fetch_param("netboot")
+
+    def get_name_servers(self):
+        """
+        Getter for name servers
+        """
+        return self.fetch_param("name_servers")
+
+    def get_name_servers_search(self):
+        """
+        Getter for name servers search
+        """
+        return self.fetch_param("name_servers_search")
 
     def missing(self, param):
         raise EncParameterNotFound(param)

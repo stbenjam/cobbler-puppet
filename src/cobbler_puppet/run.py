@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import json
 import yaml
 import subprocess
 from custom_exceptions import *
@@ -13,22 +14,20 @@ from optparse import OptionParser, OptionGroup
 def run():
     """ Guts of the user-facing portion """
 
-    """
-    Parse Command Line Options
-    """
+    # Parse Command Line Options
 
     usage = "usage: %prog [options]"
 
     Parser = OptionParser(usage=usage)
 
     Parser.add_option("-m", "--many", dest="do_many", action="store_true",
-                      default=False, help="Do multiple machines")
+                      default=False, help="Use node-lister to do multiple servers")
 
-    Parser.add_option("-s", "--search", dest="search_string", default="",
-                      metavar="STRING", help="Search string")
+    Parser.add_option("-s", "--search", dest="search_string", default=None,
+                      metavar="STRING", help="Search string (e.g., hostname)")
 
-    Parser.add_option("-n", "--hostname", dest="hostname",  default="",
-                      metavar="STRING", help="Target System Hostname")
+    Parser.add_option("-c", "--config", dest="config_file", default="/etc/cobbler-puppet.conf",
+                      metavar="STRING", help="Config file (default: /etc/cobbler-puppet.conf)")
 
     (options, args) = Parser.parse_args()
 
@@ -36,24 +35,16 @@ def run():
         Parser.print_help()
         sys.exit(1)
 
-    # Either "many" or "one"
-    if options.__dict__["do_many"] and options.__dict__["hostname"]:
-        Parser.print_help()
-        print "\n*** Invalid Options: Cannot specify --many and --hostname"
-        sys.exit(1)
-
-    config = Config()
+    config = Config(configFile=options.config_file)
 
     # Assemble the query and the cmd
     if options.__dict__["do_many"]:
         cmd = config.node_lister
-        if options.__dict__["search_string"]:
-            query = options.search_string
-        else:
-            query = None
     else:
         cmd = config.external_nodes
-        query = options.hostname
+
+    query = options.search_string
+
 
     ##########################################################
     #
@@ -82,16 +73,37 @@ def run():
             print "-----------------------------------------------------------"
             continue
 
-        system = CobblerSystem()
+        print "Creating new system %s...\n" % enc.system_name
 
-        attributes = ["system_name", "hostname", "profile", "interfaces",
-                      "ks_opts", "ks_meta", "netboot"]
+        system = CobblerSystem(options.config_file)
 
+        # Dynamically get a list of all setters from the system
+        # object.
+        attributes = [k[4:] for k in dir(system) if k[0:4] == "set_"]
+ 
         for attribute in attributes:
             try:
-                getattr(system, "set_" + attribute, getattr(enc, attribute))
+                # Pass the value of the ENC attribute to the cobbler
+                # system's set_"attribute" method
+                encAttr = getattr(enc, attribute)
+                if type(encAttr) is dict:
+                    getattr(system, "set_" + attribute)(**encAttr)
+                    encAttr = json.dumps(encAttr, indent=4)
+                else:
+                    getattr(system, "set_" + attribute)(encAttr)
+                print "Setting %s:\n%s\n" % (attribute, encAttr)
             except EncParameterNotFound:
                 continue  # no biggie, not a required param
 
         system.save()
+        print "System saved!"
+        print "-----------------------------------------------------------"
+
+    if config.cobbler_sync:
+        """
+        Sync cobbler
+        """
+        print "Syncing cobbler..."
+        system.sync()
+        print "Done."
         print "-----------------------------------------------------------"

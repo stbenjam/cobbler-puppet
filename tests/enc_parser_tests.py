@@ -13,6 +13,7 @@ class EncParserTests(unittest.TestCase):
 
 
     def testParsing(self):
+        print "Testing parsing..."
         self.assertEqual(self.enc.hostname, "web.example.com")
         self.assertEqual(self.enc.system_name, "web.example.com")
         self.assertEqual(self.enc.profile, "default")
@@ -25,6 +26,7 @@ class EncParserTests(unittest.TestCase):
         self.assertEqual(self.enc.interfaces["eth0"]["gateway"], "192.168.2.1")
 
     def testMissing(self):
+        print "Testing missing parameter..."
         try:
             self.enc.boogers
         except cobbler_puppet.EncParameterNotFound:

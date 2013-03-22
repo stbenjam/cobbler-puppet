@@ -13,11 +13,12 @@ class ConfigTests(unittest.TestCase):
         self.config = cobbler_puppet.Config(configFile="data/test.conf")
 
     def testConfig(self):
-        self.assertEqual(self.config.username, "cobbler")
-        self.assertEqual(self.config.password, "password")
-        self.assertEqual(self.config.api_url, "http://localhost/cobbler_api")
-        self.assertEqual(self.config.external_nodes, "/bin/cat")
-        self.assertEqual(self.config.node_lister,"/bin/cat")
+        print "Testing Config Class..."
+        self.assertEqual(self.config.username, "cobbler", "Username mismatch")
+        self.assertEqual(self.config.password, "password", "Password mismatch")
+        self.assertEqual(self.config.api_url, "http://localhost/cobbler_api", "API URL Mismatch")
+        self.assertEqual(self.config.external_nodes, "/bin/cat", "external_nodes mismatch")
+        self.assertEqual(self.config.node_lister,"/bin/cat", "node_lister mismatch")
 
 if __name__ == "__main__":
     unittest.main()
