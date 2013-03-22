@@ -6,7 +6,7 @@ classes:
 parameters:
   cobbler_system_name: www1
   cobbler_hostname: www1.example.com 
-  cobbler_profile: fedora18-vm-default
+  cobbler_profile: default
   cobbler_kernel_opts:
     quiet:
     ascpi: off

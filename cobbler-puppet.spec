@@ -1,6 +1,6 @@
 Name:		cobbler-puppet
 Version:	1.0
-Release:	0
+Release:	1
 Summary:	Tool for importing cobbler system profiles from an ENC
 
 Group:	    Applications/System	
