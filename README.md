@@ -21,26 +21,26 @@ classes:
   bar:
   baz:
 parameters:
-  cobbler\_system\_name: www1
-  cobbler\_hostname: www1.example.com 
-  cobbler\_profile: fedora18-vm-default
-  cobbler\_kernel\_opts:
+  cobbler_system_name: www1
+  cobbler_hostname: www1.example.com 
+  cobbler_profile: fedora18-vm-default
+  cobbler_kernel_opts:
     quiet:
     ascpi: off
-  cobbler\_ks\_meta:
+  cobbler_ks_meta:
     potato: true
-  cobbler\_interfaces: 
+  cobbler_interfaces: 
     eth0:
       bonding: slave
-      bonding\_master: bond0
+      bonding_master: bond0
       macaddress: DE:AD:DE:AD:BE:ED
     eth1:
       bonding: slave
-      bonding\_master: bond0
+      bonding_master: bond0
       macaddress: DE:AD:DE:AD:BE:EF
     bond0:
       bonding: master
-      bonding\_opts: "mode=active-backup miimon=100"
+      bonding_opts: "mode=active-backup miimon=100"
       static: true
       ipaddress: 192.168.1.100
       subnet: 255.255.255.0
