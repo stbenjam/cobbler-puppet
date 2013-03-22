@@ -1,9 +1,7 @@
 cobbler-puppet
 ==============
 
-! Still a work in progress...not ready
-
-[![Build Status](https://travis-ci.org/stbenjam/cobbler-puppet.png)](https://travis-ci.org/stbenjam/cobbler-puppet)
+Travis CI: [![Build Status](https://travis-ci.org/stbenjam/cobbler-puppet.png)](https://travis-ci.org/stbenjam/cobbler-puppet)
 
 Manage Cobbler Server Entries Based On Output of a Puppet External Node Classifier.
 
@@ -83,3 +81,13 @@ external\_nodes=/bin/cat
 Cobbler-Puppet takes the normal ENC script you might use with your puppet infrastructure already.  It gets passed one argument, the name of a hostname, and must return one YAML document.
 
 node\_lister is an additional script you may optionally provide that can return many yaml documents.  You can optionally specify an argument to this script, like a search string.  
+
+How to Build the RPM
+====================
+
+You can use build.sh if you have mock, otherwise:
+
+```
+tar -czvf cobler-puppet.tar.gz src/
+rpmbuild -ba cobbler-puppet.spec 
+```

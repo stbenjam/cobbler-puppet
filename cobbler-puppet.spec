@@ -13,7 +13,6 @@ Requires:	python PyYAML
 %description
 Tool for importing cobbler system profiles from an ENC
 
-
 %prep
 %setup -n src
 
