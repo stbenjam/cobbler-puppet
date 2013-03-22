@@ -24,7 +24,7 @@ parameters:
   cobbler_profile: fedora18-vm-default
   cobbler_kernel_opts:
     quiet:
-    ascpi: off
+    acpi: off
   cobbler_ks_meta:
     potato: true
   cobbler_interfaces: 
