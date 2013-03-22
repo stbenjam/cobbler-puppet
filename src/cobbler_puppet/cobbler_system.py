@@ -64,6 +64,13 @@ class CobblerSystem:
         """
         self._modify("ks_meta", kwargs)
 
+    def set_interfaces(self, **kwargs):
+        """ Parses any interfaces in a puppet create_resources style
+        format """
+        for interface, config in kwargs.iteritems():
+            config["interface"] = interface
+            self.set_interface(config)
+
     def set_interface(self, **kwargs):
         """
         Creates a network interface:
