@@ -85,10 +85,12 @@ def run():
         system = CobblerSystem()
 
         attributes = ["system_name", "hostname", "profile", "interfaces",
-                      "ks_opts", "ks_meta", "netboot"]
+                      "interface", "ks_opts", "ks_meta", "netboot"]
 
         for attribute in attributes:
             try:
+                # Pass the value of the ENC attribute to the cobbler
+                # system's set_"attribute" method
                 getattr(system, "set_" + attribute, getattr(enc, attribute))
             except EncParameterNotFound:
                 continue  # no biggie, not a required param
