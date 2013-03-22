@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import json
 import yaml
 import subprocess
 from custom_exceptions import *
@@ -82,8 +83,9 @@ def run():
             print "-----------------------------------------------------------"
             continue
 
-        system = CobblerSystem()
+        print "Creating new system %s...\n" % enc.system_name
 
+        system = CobblerSystem()
         attributes = ["system_name", "hostname", "profile", "interfaces",
                       "interface", "ks_opts", "ks_meta", "netboot"]
 
@@ -91,9 +93,16 @@ def run():
             try:
                 # Pass the value of the ENC attribute to the cobbler
                 # system's set_"attribute" method
-                getattr(system, "set_" + attribute, getattr(enc, attribute))
+                encAttr = getattr(enc, attribute)
+                if type(encAttr) is dict:
+                    getattr(system, "set_" + attribute)(**encAttr)
+                    encAttr = json.dumps(encAttr, indent=4)
+                else:
+                    getattr(system, "set_" + attribute)(encAttr)
+                print "Setting %s:\n%s\n" % (attribute, encAttr)
             except EncParameterNotFound:
                 continue  # no biggie, not a required param
 
         system.save()
+        print "System saved, and cobbler synced!"
         print "-----------------------------------------------------------"

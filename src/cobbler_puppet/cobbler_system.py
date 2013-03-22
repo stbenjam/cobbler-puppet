@@ -69,7 +69,7 @@ class CobblerSystem:
         format """
         for interface, config in kwargs.iteritems():
             config["interface"] = interface
-            self.set_interface(config)
+            self.set_interface(**config)
 
     def set_interface(self, **kwargs):
         """
@@ -93,7 +93,7 @@ class CobblerSystem:
                 interface['%s-%s' % (k, kwargs['interface'])] = v
 
         if "gateway" in kwargs:
-            self._modify("gateway", gateway)
+            self._modify("gateway", kwargs["gateway"])
 
         self._modify("modify_interface", interface)
 
