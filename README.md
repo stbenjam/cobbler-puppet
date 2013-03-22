@@ -14,7 +14,7 @@ Cobbler-Puppet calls your [External Node Classifier](http://docs.puppetlabs.com/
 
 If you want to change the "schema" of the expected ENC output, you can modify the methods in enc\_parser.py to pull the requisite data from wherever in your YAML.  For example, you might want to pull the network configuration from a 'network' class's parameters.
 
-<pre><code>
+```yaml
 ---
 classes:
   foo:
@@ -45,8 +45,7 @@ parameters:
       ipaddress: 192.168.1.100
       subnet: 255.255.255.0
       gateway: 192.168.1.1
-</pre></code>
- 
+```
 
 Configuration
 =============
