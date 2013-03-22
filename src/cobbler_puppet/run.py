@@ -104,5 +104,15 @@ def run():
                 continue  # no biggie, not a required param
 
         system.save()
-        print "System saved, and cobbler synced!"
+        print "System saved!"
         print "-----------------------------------------------------------"
+
+    if config.sync_cobbler:
+        """
+        Sync cobbler
+        """
+        print "Syncing cobbler..."
+        print system.sync()
+        print "Done."
+        print "-----------------------------------------------------------"
+
