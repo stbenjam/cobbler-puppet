@@ -17,6 +17,7 @@ ctrl_c()
     echo "Caught CTRL+C, cleaning up"
     cleanup
 }
+
 trap ctrl_c SIGINT
 
 if [[ -e $LOCKFILE ]]
@@ -28,6 +29,8 @@ then
 else
     echo $USER > $LOCKFILE
 fi
+
+mkdir -p rpms/
 
 revision=$(date +%s)
 echo "Revision: $revision"
