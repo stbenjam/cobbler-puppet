@@ -20,14 +20,19 @@ classes:
   baz:
 parameters:
   cobbler_system_name: www1
-  cobbler_hostname: www1.example.com 
-  cobbler_profile: fedora18-vm-default
+  cobbler_hostname: www1.example.com
+  cobbler_profile: default
   cobbler_kernel_opts:
     quiet:
     acpi: off
+  cobbler_kernel_opts_post:
+    quiet:
+    acpi: on
   cobbler_ks_meta:
     potato: true
-  cobbler_interfaces: 
+  cobbler_name_servers: [ "8.8.8.8", "8.8.4.4" ]
+  cobbler_name_servers_search: example.com
+  cobbler_interfaces:
     eth0:
       bonding: slave
       bonding_master: bond0
@@ -43,6 +48,77 @@ parameters:
       ipaddress: 192.168.1.100
       subnet: 255.255.255.0
       gateway: 192.168.1.1
+```
+
+Running cobbler-import-enc:
+
+```
+[root@luna ~]# cobbler-import-enc -s www1.example.com
+-----------------------------------------------------------
+Creating new system www1...
+
+Setting hostname:
+www1.example.com
+
+Setting interfaces:
+{
+    "bond0": {
+        "subnet": "255.255.255.0", 
+        "bonding": "master", 
+        "static": true, 
+        "bonding_opts": "mode=active-backup miimon=100", 
+        "interface": "bond0", 
+        "ipaddress": "192.168.1.100", 
+        "gateway": "192.168.1.1"
+    }, 
+    "eth1": {
+        "interface": "eth1", 
+        "macaddress": "DE:AD:DE:AD:BE:EF", 
+        "bonding": "slave", 
+        "bonding_master": "bond0"
+    }, 
+    "eth0": {
+        "interface": "eth0", 
+        "macaddress": "DE:AD:DE:AD:BE:ED", 
+        "bonding": "slave", 
+        "bonding_master": "bond0"
+    }
+}
+
+Setting kernel_opts:
+{
+    "quiet": null, 
+    "acpi": false
+}
+
+Setting kernel_opts_post:
+{
+    "quiet": null, 
+    "acpi": true
+}
+
+Setting ks_meta:
+{
+    "potato": true
+}
+
+Setting name_servers:
+['8.8.8.8', '8.8.4.4']
+
+Setting name_servers_search:
+example.com
+
+Setting profile:
+default
+
+Setting system_name:
+www1
+
+System saved!
+-----------------------------------------------------------
+Syncing cobbler...
+Done.
+-----------------------------------------------------------
 ```
 
 Configuration
