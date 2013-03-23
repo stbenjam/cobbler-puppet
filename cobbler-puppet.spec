@@ -1,6 +1,6 @@
 Name:		cobbler-puppet
 Version:	1.1
-Release: 1363997294
+Release: 1363998823
 Summary:	Tool for importing cobbler system profiles from an ENC
 
 BuildArch:  noarch

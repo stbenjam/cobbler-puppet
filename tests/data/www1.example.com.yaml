@@ -9,9 +9,14 @@ parameters:
   cobbler_profile: default
   cobbler_kernel_opts:
     quiet:
-    ascpi: off
+    acpi: off
+  cobbler_kernel_opts_post:
+    quiet:
+    acpi: on
   cobbler_ks_meta:
     potato: true
+  cobbler_name_servers: [ "8.8.8.8", "8.8.4.4" ]
+  cobbler_name_servers_search: example.com
   cobbler_interfaces: 
     eth0:
       bonding: slave

@@ -57,12 +57,30 @@ class CobblerSystem:
         """
         self._modify("kernel_options", kwargs)
 
+    def set_kernel_opts_post(self, **kwargs):
+        """
+        Sets Kernel Opts Post
+        """
+        self._modify("kernel_opts_post", kwargs)
+
     def set_ks_meta(self, **kwargs):
         """
         Sets kickstart metadata   Pass as named keywords.  E.g.,
         set_ks_meta(self, foo=bar)
         """
         self._modify("ks_meta", kwargs)
+
+    def set_name_servers(self, nameservers):
+        """
+        Sets DNS Resolvers
+        """
+        self._modify("name_servers", nameservers)
+
+    def set_name_servers_search(self, search):
+        """
+        Sets DNS Search path
+        """
+        self._modify("name_servers_search", search)
 
     def set_interfaces(self, **kwargs):
         """ Parses any interfaces in a puppet create_resources style
