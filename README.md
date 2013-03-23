@@ -119,6 +119,110 @@ System saved!
 Syncing cobbler...
 Done.
 -----------------------------------------------------------
+[root@luna ~]# cobbler system report --name www1
+Name                           : www1
+TFTP Boot Files                : {}
+Comment                        : 
+Enable gPXE?                   : 0
+Fetchable Files                : {}
+Gateway                        : 192.168.1.1
+Hostname                       : www1.example.com
+Image                          : 
+IPv6 Autoconfiguration         : False
+IPv6 Default Device            : 
+Kernel Options                 : {'quiet': '~', 'acpi': False}
+Kernel Options (Post Install)  : {}
+Kickstart                      : <<inherit>>
+Kickstart Metadata             : {'potato': True}
+LDAP Enabled                   : False
+LDAP Management Type           : authconfig
+Management Classes             : []
+Management Parameters          : <<inherit>>
+Monit Enabled                  : False
+Name Servers                   : ['8.8.8.8', '8.8.4.4']
+Name Servers Search Path       : ['example.com']
+Netboot Enabled                : True
+Owners                         : ['admin']
+Power Management Address       : 
+Power Management ID            : 
+Power Management Password      : 
+Power Management Type          : ipmitool
+Power Management Username      : 
+Profile                        : default
+Proxy                          : <<inherit>>
+Red Hat Management Key         : <<inherit>>
+Red Hat Management Server      : <<inherit>>
+Repos Enabled                  : False
+Server Override                : <<inherit>>
+Status                         : production
+Template Files                 : {}
+Virt Auto Boot                 : <<inherit>>
+Virt CPUs                      : <<inherit>>
+Virt Disk Driver Type          : <<inherit>>
+Virt File Size(GB)             : <<inherit>>
+Virt Path                      : <<inherit>>
+Virt RAM (MB)                  : <<inherit>>
+Virt Type                      : <<inherit>>
+Interface =====                : bond0
+Bonding Opts                   : mode=active-backup miimon=100
+Bridge Opts                    : 
+DHCP Tag                       : 
+DNS Name                       : 
+Master Interface               : 
+Interface Type                 : bond
+IP Address                     : 192.168.1.100
+IPv6 Address                   : 
+IPv6 Default Gateway           : 
+IPv6 MTU                       : 
+IPv6 Secondaries               : []
+IPv6 Static Routes             : []
+MAC Address                    : 
+Management Interface           : False
+MTU                            : 
+Subnet Mask                    : 255.255.255.0
+Static                         : True
+Static Routes                  : []
+Virt Bridge                    : 
+Interface =====                : eth1
+Bonding Opts                   : 
+Bridge Opts                    : 
+DHCP Tag                       : 
+DNS Name                       : 
+Master Interface               : bond0
+Interface Type                 : bond_slave
+IP Address                     : 
+IPv6 Address                   : 
+IPv6 Default Gateway           : 
+IPv6 MTU                       : 
+IPv6 Secondaries               : []
+IPv6 Static Routes             : []
+MAC Address                    : DE:AD:DE:AD:BE:EF
+Management Interface           : False
+MTU                            : 
+Subnet Mask                    : 
+Static                         : False
+Static Routes                  : []
+Virt Bridge                    : 
+Interface =====                : eth0
+Bonding Opts                   : 
+Bridge Opts                    : 
+DHCP Tag                       : 
+DNS Name                       : 
+Master Interface               : bond0
+Interface Type                 : bond_slave
+IP Address                     : 
+IPv6 Address                   : 
+IPv6 Default Gateway           : 
+IPv6 MTU                       : 
+IPv6 Secondaries               : []
+IPv6 Static Routes             : []
+MAC Address                    : DE:AD:DE:AD:BE:ED
+Management Interface           : False
+MTU                            : 
+Subnet Mask                    : 
+Static                         : False
+Static Routes                  : []
+Virt Bridge                    : 
 ```
 
 Configuration
