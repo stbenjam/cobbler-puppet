@@ -26,13 +26,16 @@ def run():
     Parser.add_option("-s", "--search", dest="search_string", default=None,
                       metavar="STRING", help="Search string (e.g., hostname)")
 
+    Parser.add_option("-c", "--config", dest="config_file", default="/etc/cobbler-puppet.conf",
+                      metavar="STRING", help="Config file (default: /etc/cobbler-puppet.conf)")
+
     (options, args) = Parser.parse_args()
 
     if len(sys.argv) == 1:
         Parser.print_help()
         sys.exit(1)
 
-    config = Config()
+    config = Config(configFile=options.config_file)
 
     # Assemble the query and the cmd
     if options.__dict__["do_many"]:
@@ -72,7 +75,7 @@ def run():
 
         print "Creating new system %s...\n" % enc.system_name
 
-        system = CobblerSystem()
+        system = CobblerSystem(options.config_file)
 
         # Dynamically get a list of all setters from the system
         # object.
@@ -96,11 +99,11 @@ def run():
         print "System saved!"
         print "-----------------------------------------------------------"
 
-    if config.sync_cobbler:
+    if config.cobbler_sync:
         """
         Sync cobbler
         """
         print "Syncing cobbler..."
-        print system.sync()
+        system.sync()
         print "Done."
         print "-----------------------------------------------------------"

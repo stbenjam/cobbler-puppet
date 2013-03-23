@@ -35,6 +35,8 @@ class Config:
         self._config['external_nodes'] = self._cp.get("puppet",
                                                       "external_nodes")
 
+        self._config["cobbler_sync"] = self._cp.get("cobbler", "cobbler_sync")
+
     def get_rhn_credentials(self):
         """
         If we're using the rhn authorization module, we get the taskomatic

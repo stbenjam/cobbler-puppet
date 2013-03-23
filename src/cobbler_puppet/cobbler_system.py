@@ -12,9 +12,9 @@ import xmlrpclib
 
 class CobblerSystem:
 
-    def __init__(self):
-        config = Config()
-        self._cobbler = xmlrpclib.Server(config.api_url)
+    def __init__(self, configFile):
+        config = Config(configFile=configFile)
+        self._cobbler = xmlrpclib.Server(config.api_url, allow_none=True)
         self._token = self._cobbler.login(config.username, config.password)
         self._system = self._cobbler.new_system(self._token)
 
