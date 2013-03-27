@@ -1,6 +1,8 @@
 cobbler-puppet
 ==============
 
+A demo of travis CI
+
 Travis CI: [![Build Status](https://travis-ci.org/stbenjam/cobbler-puppet.png)](https://travis-ci.org/stbenjam/cobbler-puppet)
 
 Manage Cobbler Server Entries Based On Output of a Puppet External Node Classifier.
